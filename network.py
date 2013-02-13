@@ -8,6 +8,9 @@
 
 """
 
+from __future__ import division
+import random
+
 class Graph:
     """
     Represents a graph
@@ -36,4 +39,54 @@ class Graph:
         return {x: degree.count(x) for x in set(degree)}
 
 
+def generate_random_network(n, d_avg=7):
+    """
+    Generates Erdos-Renyi network
 
+    :param n: Number of nodes.
+
+    :param d_avg: Average number of edges per node.
+
+    :returns:: A Graph instance
+
+    """
+    l = d_avg * n // 2
+    g = Graph(n)
+    for i in range(l):
+        while True:
+            n1 = random.randint(0, n-1)
+            n2 = random.randint(0, n-1)
+            if n1 != n2:
+                break
+        g.add_edge(n1, n2)
+    return g
+
+def draw_degree_distribution(g, mu):
+    """
+    Draws the degree distribution of a graph and Poisson fit
+    """
+
+    import numpy as np
+    from scipy.stats import poisson
+    import matplotlib.pyplot as plt
+
+    d = g.get_degree_distribution()
+
+    v1 = [x/sum(d.values()) for x in d.values()]
+
+    # sorted as we need to draw the line
+    sorted_d = sorted(d.keys())
+    v2 = poisson.pmf(sorted_d, mu)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+    width = 0.35
+    ax.bar(np.array(d.keys()) - width/2, v1, width, color='m', label='data')
+    ax.plot(sorted_d, v2, 'c--', label='Poisson')
+
+    ax.set_xlabel('degree')
+    ax.set_ylabel('probability')
+    ax.legend()
+
+    plt.show()
