@@ -18,8 +18,8 @@ class Graph:
     """
     Represents a graph.
 
-    Each graph is represented by adjacency list where there
-    might be at most one edge between two nodes and no self-loop.
+    Each graph is represented by adjacency list with
+    at most one edge between two nodes and no self-loop.
     """
 
     def __init__(self, n):
@@ -57,7 +57,7 @@ class Graph:
         for x in range(self._node):
             # get triples
             # Does the exact same thing as in Paul's example but
-            # uses itertools
+            # uses itertools to use generators
             t = itertools.ifilter(lambda s: s[0] < s[1],
                     itertools.product(self._edges[x], repeat=2))
             for s in t:
