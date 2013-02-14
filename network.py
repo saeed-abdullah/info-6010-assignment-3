@@ -13,19 +13,26 @@ import random
 
 class Graph:
     """
-    Represents a graph
+    Represents a graph.
+
+    Each graph is represented by adjacency list where there
+    might be at most one edge between two nodes and no self-loop.
     """
 
     def __init__(self, n):
         self._node = n
+
+        # Set to ensure there is at most one edge.
         self._edges = [set() for x in range(n)]
 
     def add_edge(self, n1, n2):
         """
-        Adds a new edge
+        Adds a new edge if n1 and n2 are not same.
         """
-        self._edges[n1].add(n2)
-        self._edges[n2].add(n1)
+        # Avoids self-loop.
+        if n1 != n2
+            self._edges[n1].add(n2)
+            self._edges[n2].add(n1)
 
     def get_degree_distribution(self):
         """
