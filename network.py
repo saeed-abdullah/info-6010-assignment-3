@@ -65,6 +65,20 @@ class Graph:
 
         return triangles/triples
 
+    def get_avg_f_o_f(self):
+        """
+        Returns computed and expected avg number of friends of friends.
+        """
+        d = [len(x) for x in self._edges]
+        f_o_f = [sum([len(self._edges[f_o_v])
+                    for f_o_v in self._edges[v]])
+                        for v in range(self._node)]
+
+        avg_fof = np.mean(f_o_f) / np.mean(d)
+        exp_fof = np.mean(d) + np.var(d) / np.mean(d)
+
+        return avg_fof, exp_fof
+
 def generate_random_network(n, d_avg=7):
     """
     Generates Erdos-Renyi network
