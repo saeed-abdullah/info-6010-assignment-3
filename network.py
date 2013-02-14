@@ -10,6 +10,7 @@
 
 from __future__ import division
 import random
+import itertools
 
 class Graph:
     """
@@ -45,6 +46,24 @@ class Graph:
         # Compact and inefficient?
         return {x: degree.count(x) for x in set(degree)}
 
+    def get_clustering_coefficient(self):
+        """
+        Returns clustering coefficient of the graph
+        """
+        triples = 0
+        triangles = 0
+        for x in range(self._node):
+            # get triples
+            # Does the exact same thing as in Paul's example but
+            # uses itertools
+            t = itertools.ifilter(lambda s: s[0] < s[1],
+                    itertools.product(self._edges[x], repeat=2))
+            for s in t:
+                triples += 1
+                if s[0] in self._edges[s[1]]:
+                    triangles += 1
+
+        return triangles/triples
 
 def generate_random_network(n, d_avg=7):
     """
