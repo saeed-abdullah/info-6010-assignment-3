@@ -108,9 +108,7 @@ def draw_degree_distribution(g, mu):
     Draws the degree distribution of a graph and Poisson fit
     """
 
-    import numpy as np
     from scipy.stats import poisson
-    import matplotlib.pyplot as plt
 
     d = g.get_degree_distribution()
 
