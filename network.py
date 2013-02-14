@@ -11,6 +11,8 @@
 from __future__ import division
 import random
 import itertools
+import numpy as np
+import matplotlib.pyplot as plt
 
 class Graph:
     """
