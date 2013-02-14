@@ -30,7 +30,7 @@ class Graph:
         Adds a new edge if n1 and n2 are not same.
         """
         # Avoids self-loop.
-        if n1 != n2
+        if n1 != n2:
             self._edges[n1].add(n2)
             self._edges[n2].add(n1)
 
