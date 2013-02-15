@@ -189,65 +189,48 @@ def generate_preferential_attachment_network(n):
 
 def main():
 
-    print("Erdös-Renyi networks\n")
 
     d_avg = 7
-    g1 = generate_random_network(10, d_avg)
-    draw_degree_distribution(g1, d_avg)
+    node_counts = [10, 1000, 100000]
+    r_nets = []
+    b_nets = []
 
-    g2 = generate_random_network(1000, d_avg)
-    draw_degree_distribution(g2, d_avg)
-
-
-    g3 = generate_random_network(100000, d_avg)
-    draw_degree_distribution(g3, d_avg)
-
-    print("Friend of friend:\n")
     s_format = "Node: {0} Actual: {1} Expected: {2}\n"
 
-    t = g1.get_avg_f_o_f()
-    print(s_format.format(10, t[0], t[1]))
-    t = g2.get_avg_f_o_f()
-    print(s_format.format(1000, t[0], t[1]))
-    t = g3.get_avg_f_o_f()
-    print(s_format.format(100000, t[0], t[1]))
+    # Generates networks
+    for x in node_counts:
+        r_nets.append(generate_random_network(x, d_avg))
+        b_nets.append(generate_preferential_attachment_network(x))
+
+    print("Erdös-Renyi networks\n")
+
+    for r in r_nets:
+        draw_degree_distribution(r, d_avg)
+
+    print("Friend of friend:\n")
+    for r in r_nets:
+        t = r.get_avg_f_o_f()
+        print(s_format.format(r._node, t[0], t[1]))
 
     print("Clustering coefficient\n")
-    t = g1.get_clustering_coefficient()
-    print(s_format.format(10, t, d_avg/(10-1)))
-    t = g2.get_clustering_coefficient()
-    print(s_format.format(1000, t, d_avg/(1000-1)))
-    t = g3.get_clustering_coefficient()
-    print(s_format.format(100000, t, d_avg/(100000-1)))
+    for r in r_nets:
+        t = r.get_clustering_coefficient()
+        print(s_format.format(r._node, t, d_avg/(r._node - 1)))
 
     print("Barabási–Albert networks\n")
 
-    b1 = generate_preferential_attachment_network(10)
-    draw_log_log_degree_distribution(b1)
-
-    b2 = generate_preferential_attachment_network(1000)
-    draw_log_log_degree_distribution(b2)
-
-    b3 = generate_preferential_attachment_network(100000)
-    draw_log_log_degree_distribution(b3)
+    for b in b_nets:
+        draw_log_log_degree_distribution(b)
 
     print("Friend of friend:\n")
-    t = b1.get_avg_f_o_f()
-    print(s_format.format(10, t[0], t[1]))
-    t = b2.get_avg_f_o_f()
-    print(s_format.format(1000, t[0], t[1]))
-    t = b3.get_avg_f_o_f()
-    print(s_format.format(100000, t[0], t[1]))
+    for b in b_nets:
+        t = b.get_avg_f_o_f()
+        print(s_format.format(b._node, t[0], t[1]))
 
     print("Clustering coefficient\n")
-    # Don't know d_avg
-    s_format = "Node: {0} Coeff: {1}\n"
-    t = b1.get_clustering_coefficient()
-    print(s_format.format(10, t))
-    t = b2.get_clustering_coefficient()
-    print(s_format.format(1000, t))
-    t = b3.get_clustering_coefficient()
-    print(s_format.format(100000, t))
+    for b in b_nets:
+        t = b.get_clustering_coefficient()
+        print(s_format.format(b._node, t, d_avg/(b._node - 1)))
 
 if __name__ == "__main__":
     main()
