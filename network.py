@@ -103,6 +103,23 @@ def generate_random_network(n, d_avg=7):
         g.add_edge(n1, n2)
     return g
 
+def draw_log_log_degree_distribution(g):
+    """
+    Draws degree distribution in log-log scale
+    """
+    d = g.get_degree_distribution()
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+
+    ax.plot(d.keys(), d.values(), 'm.')
+    ax.set_xlabel('degree')
+    ax.set_ylabel('frequency')
+
+    plt.show()
+
 def draw_degree_distribution(g, mu):
     """
     Draws the degree distribution of a graph and Poisson fit
