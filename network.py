@@ -217,7 +217,13 @@ def main():
     # Generates networks
     for x in node_counts:
         r_nets.append(generate_random_network(x, d_avg))
-        b_nets.append(generate_preferential_attachment_network(x, d_avg))
+
+        # The param passed to `generate_preferential_attachment_network`
+        # is the number of edges for newly created node. So, if m is the
+        # number of such edges created for every new nodes, the number of
+        # average edges per node is 2 * (m * N)/N = 2 * m, where N is
+        # the total number of nodes.
+        b_nets.append(generate_preferential_attachment_network(x, d_avg//2))
 
     print("Erdös-Renyi networks\n")
 
