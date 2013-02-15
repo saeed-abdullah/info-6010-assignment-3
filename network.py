@@ -117,7 +117,7 @@ def draw_log_log_degree_distribution(g):
     ax.plot(d.keys(), d.values(), 'm.')
     ax.set_xlabel('degree')
     ax.set_ylabel('frequency')
-    ax.title("{0} Nodes".format(g._node))
+    ax.set_title("{0} Nodes".format(g._node))
 
     plt.show()
 
@@ -145,7 +145,7 @@ def draw_degree_distribution(g, mu):
 
     ax.set_xlabel('degree')
     ax.set_ylabel('probability')
-    ax.title("{0} Nodes".format(g._node))
+    ax.set_title("{0} Nodes".format(g._node))
     ax.legend()
 
     plt.show()
