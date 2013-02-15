@@ -150,40 +150,57 @@ def draw_degree_distribution(g, mu):
 
     plt.show()
 
-def generate_preferential_attachment_network(n):
+def _random_choice(seq, m, n):
+    """
+    Picks m unique samples from seq where none is equal to n
+    """
+
+    t = set()
+    while len(t) < m:
+        x = random.choice(seq)
+        if x != n:
+            t.add(x)
+    return t
+
+def generate_preferential_attachment_network(n, d_avg):
     """
     Generates graph following preferential attachment model
+
+    :param n: Node count
+
+    :param d_avg: Average edges created for each new node.
 
     The following implementation is inspired from the networkx implementaion
     of Barabási-Albert model:
     https://github.com/networkx/networkx/blob/master/networkx/generators/random_graphs.py#L567
-    Here, the number of edge from new node to existing nodes is set to one.
-
     """
+
     g = Graph(n)
 
+    # For any new node n, the connection is made to one of existing
+    # [0, n-1] nodes.
+
     # current node
-    curr = 1
+    curr = d_avg
 
     # edge end-point
-    target = 0
+    target = list(range(d_avg))
 
     # weights of node in terms of edge count
     weight = []
 
-    # For any new node n, the connection is made to one of existing
-    # [0, n-1] nodes.
     while curr < n:
-        # avoiding self-loop
-        if curr != target:
-            g.add_edge(curr, target)
+        for x in target:
+            g.add_edge(curr, x)
 
-            # weight in terms of edge count is updated
-            weight.append(target)
-            weight.append(curr)
-            curr += 1
+        # weight in terms of edge count is updated
+        weight.extend(target)
+        weight.extend([curr] * d_avg)
+        curr += 1
 
-        target = random.choice(weight)
+        # If you are using Numpy 1.7.1 version:
+        # target = np.random.choice(weight, size=d_avg)
+        target = _random_choice(weight, d_avg, curr)
 
     return g
 
@@ -200,7 +217,7 @@ def main():
     # Generates networks
     for x in node_counts:
         r_nets.append(generate_random_network(x, d_avg))
-        b_nets.append(generate_preferential_attachment_network(x))
+        b_nets.append(generate_preferential_attachment_network(x, d_avg))
 
     print("Erdös-Renyi networks\n")
 
