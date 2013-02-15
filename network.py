@@ -130,3 +130,40 @@ def draw_degree_distribution(g, mu):
     ax.legend()
 
     plt.show()
+
+def generate_preferential_attachment_network(n):
+    """
+    Generates graph following preferential attachment model
+
+    The following implementation is inspired from the networkx implementaion
+    of Barabási-Albert model:
+    https://github.com/networkx/networkx/blob/master/networkx/generators/random_graphs.py#L567
+    Here, the number of edge from new node to existing nodes is set to one.
+
+    """
+    g = Graph(n)
+
+    # current node
+    curr = 1
+
+    # edge end-point
+    target = 0
+
+    # weights of node in terms of edge count
+    weight = []
+
+    # For any new node n, the connection is made to one of existing
+    # [0, n-1] nodes.
+    while curr < n:
+        # avoiding self-loop
+        if curr != target:
+            g.add_edge(curr, target)
+
+            # weight in terms of edge count is updated
+            weight.append(target)
+            weight.append(curr)
+            curr += 1
+
+        target = random.choice(weight)
+
+    return g
